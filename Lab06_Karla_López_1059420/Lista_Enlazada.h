@@ -12,7 +12,7 @@ public:
 	Lista_Enlazada() {
 		start = nullptr;
 		end = nullptr;
-		count = 0;
+		count=0;
 	};
 
 	~Lista_Enlazada() {};
@@ -39,3 +39,5 @@ public:
 		return;
 	}
 };
+
+

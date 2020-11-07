@@ -25,9 +25,7 @@ namespace Lab06KarlaLópez1059420 {
 		MyForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: agregar código de constructor aquí
-			//
+			myFigureList = new Lista_Enlazada<Figuras_Geometricas*>();
 		}
 
 	protected:
@@ -41,7 +39,7 @@ namespace Lab06KarlaLópez1059420 {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Panel^ pnfiguras;
+
 	protected:
 
 	protected:
@@ -67,6 +65,9 @@ namespace Lab06KarlaLópez1059420 {
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Panel^ PnFiguras;
+
+
 
 	private:
 		/// <summary>
@@ -81,7 +82,6 @@ namespace Lab06KarlaLópez1059420 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->pnfiguras = (gcnew System::Windows::Forms::Panel());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -98,17 +98,11 @@ namespace Lab06KarlaLópez1059420 {
 			this->BtnPentago = (gcnew System::Windows::Forms::Button());
 			this->Txtapotema = (gcnew System::Windows::Forms::MaskedTextBox());
 			this->Txtladopentagono = (gcnew System::Windows::Forms::MaskedTextBox());
+			this->PnFiguras = (gcnew System::Windows::Forms::Panel());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
-			// 
-			// pnfiguras
-			// 
-			this->pnfiguras->Location = System::Drawing::Point(12, 284);
-			this->pnfiguras->Name = L"pnfiguras";
-			this->pnfiguras->Size = System::Drawing::Size(862, 414);
-			this->pnfiguras->TabIndex = 0;
 			// 
 			// groupBox1
 			// 
@@ -270,17 +264,25 @@ namespace Lab06KarlaLópez1059420 {
 			this->Txtladopentagono->TabIndex = 1;
 			this->Txtladopentagono->ValidatingType = System::Int32::typeid;
 			// 
+			// PnFiguras
+			// 
+			this->PnFiguras->Location = System::Drawing::Point(12, 263);
+			this->PnFiguras->Name = L"PnFiguras";
+			this->PnFiguras->Size = System::Drawing::Size(856, 336);
+			this->PnFiguras->TabIndex = 4;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(893, 720);
+			this->ClientSize = System::Drawing::Size(893, 611);
+			this->Controls->Add(this->PnFiguras);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
-			this->Controls->Add(this->pnfiguras);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
+			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->groupBox2->ResumeLayout(false);
@@ -293,8 +295,8 @@ namespace Lab06KarlaLópez1059420 {
 #pragma endregion
 		void DrawNodo(Graphics^ canvas, int posx, int posy, int type, double area, double perimeter, double height, double width) 
 		{
-			Brush^ brush = gcnew SolidBrush(Color::Navy);
-			Brush^ brushstring = gcnew SolidBrush(Color::White);
+			Brush^ brush = gcnew SolidBrush(Color::Red);
+			Brush^ brushstring = gcnew SolidBrush(Color::Red);
 			System::Drawing::Font^ fuente = gcnew System::Drawing::Font("Arial", 10, FontStyle::Bold);
 
 			switch (type)
@@ -330,7 +332,9 @@ namespace Lab06KarlaLópez1059420 {
 				break;
 			}
 
-			canvas->DrawString("Area: " + area, fuente, brushstring, posx + 1, posy + 20);
+			canvas->DrawString("Area: " + area, fuente, brushstring, posx + 1, posy + 40);
+
+			canvas->DrawString("Perimetro: " + perimeter, fuente, brushstring, posx + 1, posy + 60);
 		}
 	private: System::Void BtnTriangulo_Click(System::Object^ sender, System::EventArgs^ e)
 	{
@@ -352,7 +356,7 @@ namespace Lab06KarlaLópez1059420 {
 				for (int i = 0; i < myFigureList->count; i++)
 				{
 					Figuras_Geometricas* actual = temp->value;
-					DrawNodo(pnfiguras->CreateGraphics(), i * 100, 20, actual->type, actual->area, actual->perimeter, actual->height, actual->width);
+					DrawNodo(PnFiguras->CreateGraphics(), i * 100, 20, actual->type, actual->area, actual->perimeter, actual->height, actual->width);
 					temp = temp->next;
 				}
 
@@ -382,7 +386,7 @@ private: System::Void BtnCuadrado_Click(System::Object^ sender, System::EventArg
 			for (int i = 0; i < myFigureList->count; i++) 
 			{
 				Figuras_Geometricas* actual = temp->value;
-				DrawNodo(pnfiguras->CreateGraphics(), i * 100, 20, actual->type, actual->area, actual->perimeter, actual->width, actual->width);
+				DrawNodo(PnFiguras->CreateGraphics(), i * 100, 20, actual->type, actual->area, actual->perimeter, actual->width, actual->width);
 				temp = temp->next;
 			}
 
@@ -412,7 +416,7 @@ private: System::Void BtnPentago_Click(System::Object^ sender, System::EventArgs
 			for (int i = 0; i < myFigureList->count; i++)
 			{
 				Figuras_Geometricas* actual = temp->value;
-				DrawNodo(pnfiguras->CreateGraphics(), i * 100, 20, actual->type, actual->area, actual->perimeter, actual->height, actual->width);
+				DrawNodo(PnFiguras->CreateGraphics(), i * 100, 20, actual->type, actual->area, actual->perimeter, actual->height, actual->width);
 				temp = temp->next;
 			}
 
@@ -421,6 +425,10 @@ private: System::Void BtnPentago_Click(System::Object^ sender, System::EventArgs
 
 		MessageBox::Show("Pentágono insertado exitosamente, cantidad de elementos: " + myFigureList->count, "Insersión correcta", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
+}
+private: System::Void flowLayoutPanel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+}
+private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }
